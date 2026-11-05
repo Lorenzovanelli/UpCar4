@@ -10,49 +10,36 @@ O **UpCar** é um aplicativo Android desenvolvido em Kotlin que simula a experi�
 
 ---
 
-## Telas do aplicativo
+## Fluxo do aplicativo
 
 ### 1. Tela inicial
 
 Apresenta a identidade visual do UpCar e permite iniciar o fluxo de cadastro do passageiro.
 
-![Tela inicial do UpCar](docs/images/01-boas-vindas.jpg)
-
 ### 2. Cadastro de passageiro
 
 O usuário informa nome, RGM, e-mail e bairro de origem. Também pode selecionar uma foto para o perfil. O formulário valida os campos antes de permitir o avanço.
-
-![Cadastro de passageiro](docs/images/02-cadastro-passageiro.jpg)
 
 ### 3. Busca e seleção de motoristas
 
 Exibe um mapa com os motoristas disponíveis e uma lista de opções com informações como veículo, placa, horário, preço e avaliação. A seleção pode ser feita pela lista ou pelos marcadores do mapa.
 
-![Busca de motoristas](docs/images/03-procura-motorista.jpg)
-
 ### 4. Chat e negociação
 
 Após solicitar uma carona, o passageiro acessa uma conversa vinculada à solicitação. É possível enviar mensagens e apresentar uma contraproposta de valor. A resposta do motorista é simulada pelo aplicativo.
-
-![Chat e negociação](docs/images/04-chat.jpg)
 
 ### 5. Corrida em andamento
 
 Apresenta o mapa da corrida, a origem, o destino e a posição simulada do motorista. O progresso da viagem é controlado pelo próprio aplicativo.
 
-![Corrida em andamento](docs/images/05-corrida-em-andamento.jpg)
-
 ### 6. Perfil do motorista
 
 Mostra informações do motorista e dados apresentados pelo aplicativo, como nota e quantidade de corridas.
-
-![Perfil do motorista](docs/images/06-perfil-motorista.jpg)
 
 ### 7. Corrida finalizada e avaliação
 
 Ao finalizar a corrida, o passageiro visualiza um resumo e pode atribuir uma nota, selecionar elogios e escrever um comentário.
 
-![Corrida finalizada e avaliação](docs/images/07-corrida-finalizada.jpg)
 
 > **Observação sobre as imagens:** os caminhos acima seguem a organização de imagens documentada no projeto de referência. Caso os arquivos existentes em `docs/images/` tenham nomes diferentes, ajuste os caminhos para corresponder aos arquivos presentes no repositório.
 
