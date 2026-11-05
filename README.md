@@ -339,7 +339,8 @@ O UpCar tem como objetivo demonstrar o desenvolvimento de um aplicativo Android 
 Projeto acadêmico desenvolvido por:
 
 - **Lorenzo Vanelli**
-- **[Adicionar os demais integrantes, se aplicável]**
+- **Luan Henrique Neuwirth Castilho**
+- **Murilo de Mattos Opis**
 
 ---
 
