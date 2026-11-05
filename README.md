@@ -295,6 +295,39 @@ No Linux ou macOS:
 
 ---
 
+## Perguntas
+
+- Como estava o projeto no Trabalho 3, e o que mudou na reorganização?
+  
+R = No Trabalho 3 o Room já funcionava, mas o código estava todo misturado. Todos os arquivos ficavam no mesmo pacote e existia um único CaronaViewModel que falava direto com os cinco DAOs. Ele carregava os dados do banco uma vez, no init, e guardava tudo em listas e mapas do Compose (mutableStateListOf, mutableStateMapOf). Por isso cada alteração tinha que ser feita duas vezes: na lista em memória e no banco.
+Na reorganização separamos o projeto em camadas: a tela chama o ViewModel, o ViewModel chama o Repository e o Repository chama o DAO. Os DAOs passaram a devolver Flow, então o Room avisa sozinho quando a tabela muda e a tela atualiza sem precisar buscar de novo. O estado de cada tela foi agrupado em um UiState exposto por StateFlow, e os ViewModels passaram a ser criados por uma ViewModelFactory. Nenhuma tela ou funcionalidade nova foi criada.
+
+- Como o trio decidiu dividir os pacotes — o que foi para ui, data, data.repository e
+viewmodel?
+
+R = ui: tudo que é @Composable: as telas, os componentes reutilizáveis (barra, avatar, mapas), a navegação e o tema. Nenhum desses arquivos tem lógica de banco.
+data: as @Entity, os @Dao e o @Database, como já eram no Trabalho 3, mais os motoristas iniciais.
+data.repository: os cinco Repositories novos, um por Entity.
+viewmodel: os três ViewModels (motoristas, caronas e passageiro), cada um com seu UiState, e a ViewModelFactory. Criamos também um pacote util para funções sem estado, como validações, formatadores, constantes e a leitura da foto. A MainActivity ficou na raiz porque o AndroidManifest.xml a referencia como MainActivity.
+
+- Por que o Repository existe — o que ele resolve que não existia antes?
+  
+R = Antes o ViewModel dependia diretamente do Room, então qualquer mudança na origem dos dados mexia no ViewModel. Agora só o Repository conhece o DAO. A tela nunca fala com ele e o ViewModel só enxerga o Repository. Se um dia os dados vierem de uma API, só o Repository muda, e o ViewModel e as telas continuam iguais. Também deixou o ViewModel mais limpo: o acesso à foto escolhida na galeria e a carga dos motoristas iniciais ficaram no Repository.
+
+- O que tem dentro do UiState de cada tela, e por que escolheram esses campos?
+  
+R = MotoristaUiState: a lista de motoristas, o texto da busca por destino e o motorista selecionado. A lista filtrada é calculada a partir deles. É tudo que a tela de motoristas precisa para desenhar a lista e o mapa.
+CaronaUiState: motoristas, caronas, mensagens, avaliações, progresso da corrida e corridas finalizadas. Chat, corrida em andamento, corrida finalizada e perfil leem essas mesmas informações. Colocamos os motoristas junto para essas telas encontrarem o motorista de cada carona.
+PassageiroUiState: o passageiro salvo, os campos do formulário (nome, RGM, e-mail, bairro), a foto, se o usuário já tentou avançar e as mensagens de erro. Com isso a validação saiu da tela. Deixamos como estado local da tela só o que é puramente visual: diálogos abertos, o rascunho da mensagem do chat e os campos dos formulários de nova carona e de avaliação.
+
+- Alguma funcionalidade quebrou durante a reorganização? Como encontraram e corrigiram?
+  
+R = Remoção de motorista: o código apagava as caronas da lista em memória antes de consultar quais caronas deveriam sair do banco, então as caronas do motorista removido ficavam no banco. Com a lista vindo do Room, elas reapareceriam na tela. Corrigimos lendo as caronas antes de remover.
+Abertura do chat: como o Room responde de forma assíncrona, o chat podia abrir antes de a carona aparecer no estado e mostrar “não encontrado”. Corrigimos fazendo a navegação só acontecer depois que a carona chega ao uiState. Toque duplo: com o estado vindo do banco, dois toques rápidos podiam repetir uma ação, como confirmar ou avaliar duas vezes. O ViewModel agora ignora a repetição enquanto a primeira ainda está em andamento.
+
+- Algum integrante do trio teve dificuldade em algum ponto? Como resolveram?
+R = Não, todos nós conseguirmos desempenhar conforme oq foi pedido.
+
 ## Objetivo acadêmico
 
 O UpCar tem como objetivo demonstrar o desenvolvimento de um aplicativo Android com navegação entre telas, gerenciamento de estado, persistência local, mapas e organização de código baseada em MVVM. A implementação também permite praticar o uso de Kotlin, Jetpack Compose, Coroutines, Flow e Room em um projeto integrado.
